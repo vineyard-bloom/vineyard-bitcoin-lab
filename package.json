@@ -1,7 +1,7 @@
 {
   "name": "vineyard-bitcoin-lab",
   "version": "0.1.0",
-  "description": "Functions for testing Vineyard Bitcoin",
+  "description": "Library for testing bitcoind",
   "main": "source/index.js",
   "types": "source/index.d.ts",
   "scripts": {
@@ -10,7 +10,8 @@
   "repository": "git@github.com:vineyard-bloom/vineyard-bitcoin-lab.git",
   "license": "MIT",
   "dependencies": {
-    "rimraf": "^2.6.1"
+    "rimraf": "^2.6.1",
+    "vineyard-bitcoin": "0.1.x"
   },
   "devDependencies": {
     "@types/es6-promise": "0.0.32",

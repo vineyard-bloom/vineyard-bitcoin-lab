@@ -6,11 +6,29 @@ var Status;
     Status[Status["inactive"] = 0] = "inactive";
     Status[Status["active"] = 1] = "active";
 })(Status || (Status = {}));
+function waitUntilRunning() {
+    return new Promise(function (resolve, reject) {
+        var poll = function () {
+            child_process.exec('bitcoin-cli getinfo', function (error, stdout, stderr) {
+                if (error) {
+                    // console.log('not yet', stderr)
+                    setTimeout(poll, 100);
+                }
+                else {
+                    console.log('Bitcoind is now running');
+                    resolve();
+                }
+            });
+        };
+        setTimeout(poll, 3000);
+    });
+}
 var BitcoinServer = (function () {
     function BitcoinServer() {
         this.status = Status.inactive;
     }
     BitcoinServer.prototype.start = function () {
+        console.log('Starting bitcoind');
         var childProcess = this.childProcess = child_process.spawn('bitcoind');
         childProcess.stdout.on('data', function (data) {
             console.log("stdout: " + data);
@@ -21,7 +39,7 @@ var BitcoinServer = (function () {
         childProcess.on('close', function (code) {
             console.log("child process exited with code " + code);
         });
-        return Promise.resolve();
+        return waitUntilRunning();
     };
     BitcoinServer.prototype.stop = function () {
         var _this = this;

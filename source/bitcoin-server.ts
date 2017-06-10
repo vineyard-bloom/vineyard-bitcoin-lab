@@ -4,6 +4,26 @@ enum Status {
   inactive,
   active
 }
+
+function waitUntilRunning() {
+  return new Promise<void>((resolve, reject) => {
+    const poll = () => {
+      child_process.exec('bitcoin-cli getinfo', function (error, stdout, stderr) {
+        if (error) {
+          // console.log('not yet', stderr)
+          setTimeout(poll, 100)
+        }
+        else {
+          console.log('Bitcoind is now running')
+          resolve()
+        }
+      })
+    }
+
+    setTimeout(poll, 3000)
+  })
+}
+
 export class BitcoinServer {
   private status: Status = Status.inactive
   private stdout
@@ -11,6 +31,7 @@ export class BitcoinServer {
   private childProcess
 
   start() {
+    console.log('Starting bitcoind')
     const childProcess = this.childProcess = child_process.spawn('bitcoind')
 
     childProcess.stdout.on('data', (data) => {
@@ -25,7 +46,7 @@ export class BitcoinServer {
       console.log(`child process exited with code ${code}`);
     })
 
-    return Promise.resolve()
+    return waitUntilRunning()
   }
 
   stop() {

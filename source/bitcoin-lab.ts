@@ -1,22 +1,11 @@
-import {BitcoinServer} from "./bitcoin-server";
+import {BitcoinServer} from "./bitcoin-server"
+import {BitcoinConfig} from "vineyard-bitcoin"
 const child_process = require('child_process')
 const fs = require('fs')
 const rimraf = require('rimraf')
 
-export interface BitcoinLabConfig {
+export interface BitcoinLabConfig extends BitcoinConfig {
   walletPath: string
-  executablePath: string
-}
-
-function exec(command: string) {
-  return new Promise((resolve, reject) => {
-    child_process.exec(command, function (error, stdout, stderr) {
-      if (error)
-        reject(error)
-      else
-        resolve(stdout)
-    })
-  })
 }
 
 export class BitcoinLab {
@@ -40,6 +29,7 @@ export class BitcoinLab {
   }
 
   deleteWallet(): Promise<any> {
+    console.log('Deleting regtest bitcoin wallet')
     return this.deleteLock()
       .then(() => new Promise((resolve, reject) => {
           rimraf(this.config.walletPath, function (error, stdout, stderr) {
@@ -61,9 +51,10 @@ export class BitcoinLab {
   }
 
   reset(): Promise<any> {
-    return this.stop()
-      .then(() => this.deleteWallet())
-      .then(() => this.start())
+    return this.deleteWallet()
+    // return this.stop()
+      // .then(() => this.deleteWallet())
+      // .then(() => this.start())
   }
 
 }

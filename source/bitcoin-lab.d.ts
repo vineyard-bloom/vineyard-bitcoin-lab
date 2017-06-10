@@ -1,7 +1,7 @@
 import { BitcoinServer } from "./bitcoin-server";
-export interface BitcoinLabConfig {
+import { BitcoinConfig } from "vineyard-bitcoin";
+export interface BitcoinLabConfig extends BitcoinConfig {
     walletPath: string;
-    executablePath: string;
 }
 export declare class BitcoinLab {
     server: BitcoinServer;
