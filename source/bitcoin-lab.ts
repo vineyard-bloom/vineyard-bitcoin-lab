@@ -1,20 +1,22 @@
 import {BitcoinServer} from "./bitcoin-server"
-import {BitcoinConfig} from "vineyard-bitcoin"
+import {BitcoinClient, satoshisToBitcoin} from "vineyard-bitcoin"
 const child_process = require('child_process')
 const fs = require('fs')
 const rimraf = require('rimraf')
 
-export interface BitcoinLabConfig extends BitcoinConfig {
+export interface BitcoinLabConfig {
   walletPath: string
 }
 
 export class BitcoinLab {
   server: BitcoinServer
+  client: BitcoinClient
   config: BitcoinLabConfig
 
-  constructor(config: BitcoinLabConfig, server: BitcoinServer = new BitcoinServer()) {
+  constructor(config: BitcoinLabConfig, client: BitcoinClient, server: BitcoinServer = new BitcoinServer()) {
+    this.config = config
+    this.client = client
     this.server = server
-    this.config = config;
   }
 
   private deleteLock(): Promise<boolean> {
@@ -57,4 +59,25 @@ export class BitcoinLab {
       // .then(() => this.start())
   }
 
+  generate(blockCount: number): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      this.client.getClient().generate(blockCount, (error) => {
+        if (error)
+          reject(new Error(error));
+        else
+          resolve()
+      })
+    })
+  }
+
+  send(address: string, amount: number){
+    return new Promise<void>((resolve, reject) => {
+      this.client.getClient().sendToAddress(address, satoshisToBitcoin(amount), (error) => {
+        if (error)
+          reject(new Error(error));
+        else
+          resolve()
+      })
+    })
+  }
 }

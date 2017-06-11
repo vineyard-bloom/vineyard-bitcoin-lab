@@ -1,15 +1,18 @@
 import { BitcoinServer } from "./bitcoin-server";
-import { BitcoinConfig } from "vineyard-bitcoin";
-export interface BitcoinLabConfig extends BitcoinConfig {
+import { BitcoinClient } from "vineyard-bitcoin";
+export interface BitcoinLabConfig {
     walletPath: string;
 }
 export declare class BitcoinLab {
     server: BitcoinServer;
+    client: BitcoinClient;
     config: BitcoinLabConfig;
-    constructor(config: BitcoinLabConfig, server?: BitcoinServer);
+    constructor(config: BitcoinLabConfig, client: BitcoinClient, server?: BitcoinServer);
     private deleteLock();
     deleteWallet(): Promise<any>;
     start(): Promise<any>;
     stop(): Promise<any>;
     reset(): Promise<any>;
+    generate(blockCount: number): Promise<void>;
+    send(address: string, amount: number): Promise<void>;
 }
