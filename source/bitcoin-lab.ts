@@ -44,8 +44,8 @@ export class BitcoinLab {
       )
   }
 
-  start(): Promise<any> {
-    return this.server.start()
+  start(conf=undefined): Promise<any> {
+    return this.server.start(conf)
   }
 
   stop(): Promise<any> {
