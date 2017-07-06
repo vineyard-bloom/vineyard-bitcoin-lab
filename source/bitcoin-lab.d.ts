@@ -10,7 +10,7 @@ export declare class BitcoinLab {
     constructor(config: BitcoinLabConfig, client: BitcoinClient, server?: BitcoinServer);
     private deleteLock();
     deleteWallet(): Promise<any>;
-    start(): Promise<any>;
+    start(conf?: any): Promise<any>;
     stop(): Promise<any>;
     reset(): Promise<any>;
     generate(blockCount: number): Promise<void>;

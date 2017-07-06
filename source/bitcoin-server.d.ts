@@ -3,6 +3,6 @@ export declare class BitcoinServer {
     private stdout;
     private stderr;
     private childProcess;
-    start(): Promise<void>;
+    start(conf?: any): Promise<void>;
     stop(): Promise<{}>;
 }

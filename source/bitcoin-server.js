@@ -28,10 +28,11 @@ var BitcoinServer = (function () {
         this.status = Status.inactive;
     }
     BitcoinServer.prototype.start = function (conf) {
-        if (conf === void 0) { conf = undefined; }
+        if (conf === void 0) { conf = null; }
         console.log('Starting bitcoind');
-        var confPath = conf === undefined ? '' : '-conf=' + conf;
-        var childProcess = this.childProcess = child_process.spawn('bitcoind ${confPath}');
+        var rpcUser = '-rpcuser=' + conf.rpcuser;
+        var rpcPass = '-rpcpassword=' + conf.rpcpassword;
+        var childProcess = this.childProcess = child_process.spawn('bitcoind', [rpcUser, rpcPass]);
         childProcess.stdout.on('data', function (data) {
             console.log("stdout: " + data);
         });
