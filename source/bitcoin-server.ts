@@ -30,10 +30,11 @@ export class BitcoinServer {
   private stderr
   private childProcess
 
-  start(conf=undefined) {
+  start(conf=null) {
     console.log('Starting bitcoind')
-    const confPath = conf === undefined ? '' : '-conf='+conf
-    const childProcess = this.childProcess = child_process.spawn(`bitcoind ${confPath}`)
+    const rpcUser = '-rpcuser=' + conf.rpcuser
+    const rpcPass = '-rpcpassword=' + conf.rpcpassword
+    const childProcess = this.childProcess = child_process.spawn('bitcoind', [rpcUser, rpcPass])
 
     childProcess.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
