@@ -15,4 +15,5 @@ export declare class BitcoinLab {
     reset(): Promise<any>;
     generate(blockCount: number): Promise<void>;
     send(address: string, amount: number): Promise<void>;
+    sendMany(addressAmounts: any): Promise<void>;
 }

@@ -80,4 +80,19 @@ export class BitcoinLab {
       })
     })
   }
+
+  sendMany(addressAmounts) {
+    return new Promise<void>((resolve, reject) => {
+      for (var i in addressAmounts) {
+        addressAmounts[i] = satoshisToBitcoin(addressAmounts[i])
+      }
+      this.client.getClient().sendMany('', addressAmounts, (error) => {
+        if (error)
+          reject(new Error(error));
+        else
+          resolve()
+      })
+    })
+  }
+
 }

@@ -69,6 +69,20 @@ var BitcoinLab = (function () {
             });
         });
     };
+    BitcoinLab.prototype.sendMany = function (addressAmounts) {
+        var _this = this;
+        return new Promise(function (resolve, reject) {
+            for (var i in addressAmounts) {
+                addressAmounts[i] = vineyard_bitcoin_1.satoshisToBitcoin(addressAmounts[i]);
+            }
+            _this.client.getClient().sendMany('', addressAmounts, function (error) {
+                if (error)
+                    reject(new Error(error));
+                else
+                    resolve();
+            });
+        });
+    };
     return BitcoinLab;
 }());
 exports.BitcoinLab = BitcoinLab;
