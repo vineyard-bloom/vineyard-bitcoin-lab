@@ -30,7 +30,7 @@ var BitcoinServer = (function () {
     BitcoinServer.prototype.start = function (conf) {
         if (conf === void 0) { conf = null; }
         console.log('Starting bitcoind');
-        var confPath = conf === null ? '' : ' -conf=' + conf;
+        var confPath = !conf ? '' : ' -conf=' + conf;
         var childProcess = this.childProcess = child_process.spawn('bitcoind' + confPath);
         childProcess.stdout.on('data', function (data) {
             console.log("stdout: " + data);

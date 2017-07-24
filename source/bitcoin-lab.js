@@ -35,8 +35,9 @@ var BitcoinLab = (function () {
             });
         }); });
     };
-    BitcoinLab.prototype.start = function () {
-        return this.server.start();
+    BitcoinLab.prototype.start = function (conf) {
+        if (conf === void 0) { conf = undefined; }
+        return this.server.start(conf);
     };
     BitcoinLab.prototype.stop = function () {
         return this.server.stop();
